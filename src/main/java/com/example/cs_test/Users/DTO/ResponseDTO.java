@@ -12,7 +12,6 @@ import java.util.Date;
 @Getter
 @Setter
 public class ResponseDTO {
-
     private Long id;
     private String email;
     private String firstName;

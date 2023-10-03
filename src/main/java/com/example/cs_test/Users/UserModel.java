@@ -12,7 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Entity(name = "User")
 @Builder
-public class User {
+public class UserModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,7 +25,7 @@ public class User {
     private String lastName;
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "yyyy-MM-dd") // Specify the date format here (e.g., "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthDate;
     @Column
     private String address;

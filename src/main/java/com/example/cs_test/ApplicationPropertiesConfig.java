@@ -6,10 +6,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ApplicationPropertiesConfig {
-
     @Value("${user.age.limit}")
     private int userAgeLimit;
-
     @Bean
     public int userAgeLimit() {
         return userAgeLimit;

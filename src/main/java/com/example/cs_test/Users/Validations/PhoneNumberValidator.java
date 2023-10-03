@@ -7,13 +7,13 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 @Component
 public class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, String> {
-    private static final String PHONE_NUMBER_PATTERN = "\\+\\d{10}";
+    private static final String LONG_PHONE_NUMBER_PATTERN = "\\+\\d{12}";
+    private static final String SHORT_PHONE_NUMBER_PATTERN = "\\d{10}";
 
     @Override
     public boolean isValid(String number, ConstraintValidatorContext constraintValidatorContext) {
         if (number == null) return false;
-        System.out.println("NUMBER" + number);
-        return number.matches(PHONE_NUMBER_PATTERN);
+        return number.matches(LONG_PHONE_NUMBER_PATTERN) || number.matches(SHORT_PHONE_NUMBER_PATTERN);
 
     }
 }

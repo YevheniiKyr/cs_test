@@ -7,6 +7,9 @@ import javax.validation.Constraint;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.lang.annotation.Annotation;
+
+//Now it may be easier without ConditionalValidation
+//but i believe this wrapper may be useful in the future
 @Component
 public class ConditionalValidator implements ConstraintValidator<ConditionalValidation, Object> {
     private Class<? extends Annotation> validationAnnotation;
@@ -22,7 +25,6 @@ public class ConditionalValidator implements ConstraintValidator<ConditionalVali
             return true;
         }
 
-        // Use reflection to find and validate with the specified validation annotation
         if (validationAnnotation != null) {
             try {
                 // Get the annotation's validator class
@@ -30,16 +32,14 @@ public class ConditionalValidator implements ConstraintValidator<ConditionalVali
                 // Create an instance of the validator class
                 ConstraintValidator<Annotation, Object> validator = (ConstraintValidator<Annotation, Object>) validationClass.getDeclaredConstructor().newInstance();
                 // Initialize the validator with the annotation parameters
-                validator.initialize(null); // You may need to pass the actual annotation instance if needed
-
+                validator.initialize(null);
                 // Validate the value using the validator
                 return validator.isValid(value, context);
             } catch (Exception e) {
-                // Handle exceptions if needed
                 e.printStackTrace();
             }
         }
 
-        return false; // Custom validation failed
+        return false;
     }
 }

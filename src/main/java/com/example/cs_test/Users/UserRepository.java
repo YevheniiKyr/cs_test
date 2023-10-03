@@ -7,6 +7,6 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-    List<User> findByBirthDateBetween(Date fromDate, Date toDate);
+public interface UserRepository extends JpaRepository<UserModel, Long> {
+    List<UserModel> findByBirthDateBetween(Date fromDate, Date toDate);
 }

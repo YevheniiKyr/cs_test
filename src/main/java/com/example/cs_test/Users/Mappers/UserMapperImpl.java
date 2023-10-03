@@ -2,7 +2,7 @@ package com.example.cs_test.Users.Mappers;
 
 import com.example.cs_test.Users.DTO.RequestDTO;
 import com.example.cs_test.Users.DTO.ResponseDTO;
-import com.example.cs_test.Users.User;
+import com.example.cs_test.Users.UserModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class UserMapperImpl implements UserMapper {
     @Override
-    public User toUser(RequestDTO requestDTO) {
-        User user = new User();
+    public UserModel toUser(RequestDTO requestDTO) {
+        UserModel user = new UserModel();
         user.setAddress(requestDTO.getAddress());
         user.setBirthDate(requestDTO.getBirthDate());
         user.setEmail(requestDTO.getEmail());
@@ -22,7 +22,7 @@ public class UserMapperImpl implements UserMapper {
     }
 
     @Override
-    public ResponseDTO toDTO(User user) {
+    public ResponseDTO toDTO(UserModel user) {
         ResponseDTO responseDTO = new ResponseDTO();
         responseDTO.setId(user.getId());
         responseDTO.setBirthDate(user.getBirthDate());

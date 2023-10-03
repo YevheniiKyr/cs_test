@@ -14,7 +14,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER })
 @Retention(RUNTIME)
 public @interface NotBlankOrNull {
-    String message() default "{org.hibernate.validator.constraints.NotBlankOrNull.message}";
+    String message() default "can't be blank";
 
     Class<?>[] groups() default { };
 

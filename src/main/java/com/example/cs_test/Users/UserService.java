@@ -9,27 +9,24 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
-
     private final UserRepository userRepository;
 
-
-    public List<User> getInDateRange(Date from, Date to) {
+    public List<UserModel> getInDateRange(Date from, Date to) {
         if (to.before(from)) {
             throw new IllegalDateArguments(" 'to' need be after ' from' ");
         }
         return userRepository.findByBirthDateBetween(from, to);
     }
 
-    public User saveUser(User user) {
+    public UserModel saveUser(UserModel user) {
         return userRepository.save(user);
     }
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
+    public UserModel getUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User doesn't exist"));
     }
 
     public void deleteUserByID(Long id) {
@@ -38,8 +35,8 @@ public class UserService {
     }
 
 
-    public User updateUserPartial(PatchDTO patchDTO, Long id) {
-        User user = getUserById(id).orElseThrow(() -> new ResourceNotFoundException("User doesn't exist"));
+    public UserModel updateUserPartial(PatchDTO patchDTO, Long id) {
+        UserModel user = getUserById(id);
         if (patchDTO.getEmail() != null) {
             user.setEmail(patchDTO.getEmail());
         }
@@ -61,8 +58,8 @@ public class UserService {
         return saveUser(user);
     }
 
-    public User updateUser(RequestDTO updateDTO, Long id) {
-        User existingUser = getUserById(id).orElseThrow(() -> new ResourceNotFoundException("User doesn't exist"));
+    public UserModel updateUser(RequestDTO updateDTO, Long id) {
+        UserModel existingUser = getUserById(id);
         existingUser.setEmail(updateDTO.getEmail());
         existingUser.setFirstName(updateDTO.getFirstName());
         existingUser.setLastName(updateDTO.getLastName());

@@ -15,7 +15,8 @@ import javax.validation.Payload;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = PhoneNumberValidator.class)
 public @interface PhoneNumber {
-    String message() default "Invalid phone number or duplicates";
+    String message() default "Invalid phone number. Pattern should be  + {12numbers}. e.g: +38090990990 or {10numbers}. e.g: 0503516123";
+
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

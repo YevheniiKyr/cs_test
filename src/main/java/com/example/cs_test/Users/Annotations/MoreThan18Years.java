@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = DateValidator.class)
 public @interface MoreThan18Years {
-    String message() default "Invalid date";
+    String message() default "user age need be > 18";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

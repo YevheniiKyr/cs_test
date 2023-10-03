@@ -1,14 +1,10 @@
 package com.example.cs_test.Users;
 
-import com.example.cs_test.Exceptions.IllegalDateArguments;
-import com.example.cs_test.Exceptions.ResourceNotFoundException;
 import com.example.cs_test.Users.DTO.PatchDTO;
 import com.example.cs_test.Users.DTO.RequestDTO;
 import com.example.cs_test.Users.DTO.ResponseDTO;
 import com.example.cs_test.Users.Mappers.UserMapperImpl;
-import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,50 +12,53 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/users")
-public class UserController {
+public class Users {
 
     private final UserService userService;
     private final UserMapperImpl userMapper;
 
     @GetMapping
-    public ResponseEntity<List<User>> getUsersInDateRange(
+    public ResponseEntity<List<ResponseDTO>> getUsersInDateRange(
             @RequestParam(name = "from") Date fromDate,
             @RequestParam(name = "to") Date toDate
     ) {
-        List<User> users = userService.getInDateRange(fromDate, toDate);
-        return ResponseEntity.ok(users);
+        List<UserModel> users = userService.getInDateRange(fromDate, toDate);
+        List<ResponseDTO> usersDTO = users.stream().map(userMapper::toDTO).collect(Collectors.toList());
+        return ResponseEntity.ok(usersDTO);
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody @Valid RequestDTO requestDTO) {
-        User user = userMapper.toUser(requestDTO);
-        User savedUser = userService.saveUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+    public ResponseEntity<ResponseDTO> createUser(@RequestBody @Valid RequestDTO requestDTO) {
+        UserModel user = userMapper.toUser(requestDTO);
+        UserModel savedUser = userService.saveUser(user);
+        ResponseDTO savedUserDTO = userMapper.toDTO(savedUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUserDTO);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<User> updateUserPartial(
+    public ResponseEntity<ResponseDTO> updateUserPartial(
             @RequestBody @Valid PatchDTO patchDTO,
             @PathVariable Long id
     ) {
+        UserModel updatedUser = userService.updateUserPartial(patchDTO, id);
+        ResponseDTO updatedUserDTO = userMapper.toDTO(updatedUser);
 
-        User updatedUser = userService.updateUserPartial(patchDTO, id);
-        return ResponseEntity.ok(updatedUser);
+        return ResponseEntity.ok(updatedUserDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(
+    public ResponseEntity<ResponseDTO> updateUser(
             @RequestBody @Valid RequestDTO updateDTO,
             @PathVariable Long id
     )  {
-
-        User savedUser = userService.updateUser(updateDTO, id);
-        return ResponseEntity.ok(savedUser);
-
+        UserModel savedUser = userService.updateUser(updateDTO, id);
+        ResponseDTO savedUserDTO = userMapper.toDTO(savedUser);
+        return ResponseEntity.ok(savedUserDTO);
     }
 
     @DeleteMapping("/{id}")
